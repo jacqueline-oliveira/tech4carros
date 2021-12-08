@@ -2,12 +2,15 @@ package br.com.tech4me.tech4cars.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.tech4me.tech4cars.model.Carro;
 import br.com.tech4me.tech4cars.repository.CarroRepository;
+import br.com.tech4me.tech4cars.view.shared.CarroDTO;
 
 @Service
 public class CarroServiceImpl implements CarroService{
@@ -15,8 +18,12 @@ public class CarroServiceImpl implements CarroService{
     private CarroRepository repo;
 
     @Override
-    public List<Carro> obterCarros() {
-       return repo.findAll();
+    public List<CarroDTO> obterCarros() {
+       List<Carro> carros = repo.findAll(); 
+       
+       return carros.stream()
+        .map(c -> new ModelMapper().map(c, CarroDTO.class))
+        .collect(Collectors.toList());
     }
 
     @Override

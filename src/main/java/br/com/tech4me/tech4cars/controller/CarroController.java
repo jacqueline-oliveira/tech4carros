@@ -2,7 +2,9 @@ package br.com.tech4me.tech4cars.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tech4me.tech4cars.model.Carro;
 import br.com.tech4me.tech4cars.service.CarroService;
+import br.com.tech4me.tech4cars.view.model.CarroResponse;
+import br.com.tech4me.tech4cars.view.shared.CarroDTO;
 
 @RestController
 @RequestMapping("/api/tech4cars")
@@ -25,8 +29,14 @@ public class CarroController {
     private CarroService servico;
    
     @GetMapping
-    public ResponseEntity<List<Carro>> obterCarros() {
-        return new ResponseEntity<>(servico.obterCarros(), HttpStatus.FOUND);
+    public ResponseEntity<List<CarroResponse>> obterCarros() {
+        List<CarroDTO> carrosDto = servico.obterCarros();
+
+        List<CarroResponse> carroResponse = carrosDto.stream()
+          .map(c -> new ModelMapper().map(c, CarroResponse.class))
+          .collect(Collectors.toList());
+
+        return new ResponseEntity<>(carroResponse, HttpStatus.FOUND);
     }
 
 
@@ -55,7 +65,13 @@ public class CarroController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Carro> atualizarCarro(@PathVariable String id, @RequestBody Carro novoCarro){
-        return new ResponseEntity<>(servico.atualizarAutomovel(id, novoCarro), HttpStatus.ACCEPTED);
+        Optional<Carro> carro = servico.obterCarroPorId(id);
+
+        if (carro.isPresent()){  
+          return new ResponseEntity<>(servico.atualizarAutomovel(id, novoCarro), HttpStatus.ACCEPTED);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
 

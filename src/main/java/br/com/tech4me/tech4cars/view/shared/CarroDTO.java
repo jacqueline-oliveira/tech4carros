@@ -1,31 +1,19 @@
-package br.com.tech4me.tech4cars.model;
+package br.com.tech4me.tech4cars.view.shared;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document("carros")
-public class Carro {
-    @Id
+public class CarroDTO {
     private String id;
     private String modelo;
     private String marca;
     private String placa;
     private Double valor;
     private Double precoCusto;
-
-    public Double getPrecoCusto() {
-        return precoCusto;
-    }
-    public void setPrecoCusto(Double precoCusto) {
-        this.precoCusto = precoCusto;
-    }
+    
     public String getId() {
         return id;
     }
     public void setId(String id) {
         this.id = id;
     }
-    
     public String getModelo() {
         return modelo;
     }
@@ -50,10 +38,11 @@ public class Carro {
     public void setValor(Double valor) {
         this.valor = valor;
     }
-
-    @Override
-    public String toString() {
-        return "Carro [marca=" + marca + ", modelo=" + modelo + ", placa=" + placa + ", valor=" + valor + "]";
+    public Double getPrecoCusto() {
+        return precoCusto;
+    }
+    public void setPrecoCusto(Double precoCusto) {
+        this.precoCusto = precoCusto;
     }
 
     
