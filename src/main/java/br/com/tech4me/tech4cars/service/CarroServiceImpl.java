@@ -27,13 +27,16 @@ public class CarroServiceImpl implements CarroService{
     }
 
     @Override
-    public Carro cadastrarCarro(Carro carro) {
-        return repo.save(carro);
+    public CarroDTO cadastrarCarro(CarroDTO carro) {
+        Carro carroCadastro = new ModelMapper().map(carro, Carro.class);
+        carroCadastro = repo.save(carroCadastro);
+        return new ModelMapper().map(carroCadastro, CarroDTO.class);
     }
 
     @Override
-    public Optional<Carro> obterCarroPorId(String id) {
-        return repo.findById(id);
+    public Optional<CarroDTO> obterCarroPorId(String id) {
+        Optional<Carro> carroBusca = repo.findById(id);
+        return Optional.of(new ModelMapper().map(carroBusca.get(), CarroDTO.class));
     }
 
     @Override
@@ -42,9 +45,11 @@ public class CarroServiceImpl implements CarroService{
     }
 
     @Override
-    public Carro atualizarAutomovel(String id, Carro novoCarro) {
-        novoCarro.setId(id);
-        return repo.save(novoCarro);
+    public CarroDTO atualizarAutomovel(String id, CarroDTO novoCarro) {
+        Carro carroParaAtualizar = new ModelMapper().map(novoCarro, Carro.class);
+        carroParaAtualizar.setId(id);
+        carroParaAtualizar = repo.save(carroParaAtualizar);
+        return new ModelMapper().map(carroParaAtualizar, CarroDTO.class);
     }
 
     

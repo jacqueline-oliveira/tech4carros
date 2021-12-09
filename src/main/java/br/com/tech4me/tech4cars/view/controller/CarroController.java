@@ -1,4 +1,4 @@
-package br.com.tech4me.tech4cars.controller;
+package br.com.tech4me.tech4cars.view.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.tech4me.tech4cars.model.Carro;
 import br.com.tech4me.tech4cars.service.CarroService;
 import br.com.tech4me.tech4cars.view.model.CarroResponse;
 import br.com.tech4me.tech4cars.view.shared.CarroDTO;
@@ -41,8 +40,8 @@ public class CarroController {
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Carro> obterCarroPorId(@PathVariable String id) {
-        Optional<Carro> carro = servico.obterCarroPorId(id);
+    public ResponseEntity<CarroDTO> obterCarroPorId(@PathVariable String id) {
+        Optional<CarroDTO> carro = servico.obterCarroPorId(id);
 
         if (carro.isPresent()){
           return new ResponseEntity<>(carro.get(), HttpStatus.FOUND);
@@ -53,7 +52,7 @@ public class CarroController {
     }
 
     @PostMapping
-    public ResponseEntity<Carro> cadastrarCarro(@RequestBody Carro carro) {
+    public ResponseEntity<CarroDTO> cadastrarCarro(@RequestBody CarroDTO carro) {
         return new ResponseEntity<>(servico.cadastrarCarro(carro), HttpStatus.CREATED);
     }
 
@@ -64,8 +63,8 @@ public class CarroController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Carro> atualizarCarro(@PathVariable String id, @RequestBody Carro novoCarro){
-        Optional<Carro> carro = servico.obterCarroPorId(id);
+    public ResponseEntity<CarroDTO> atualizarCarro(@PathVariable String id, @RequestBody CarroDTO novoCarro){
+        Optional<CarroDTO> carro = servico.obterCarroPorId(id);
 
         if (carro.isPresent()){  
           return new ResponseEntity<>(servico.atualizarAutomovel(id, novoCarro), HttpStatus.ACCEPTED);
