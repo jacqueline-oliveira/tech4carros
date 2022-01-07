@@ -1,11 +1,22 @@
 package br.com.tech4me.tech4cars.view.shared;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
+
 public class CarroDTO {
     private String id;
+    @NotEmpty(message = "Deve preenche o modelo")
     private String modelo;
+    @NotBlank(message = "Precisa informar a marca")
     private String marca;
+    @NotBlank(message = "Precisa informar placa")
+    @Pattern(regexp = "^[a-zA-Z]{3}[0-9]{4}$")
     private String placa;
+    @Positive(message = "Valor deve ser maior que zero")
     private Double valor;
+    @Positive(message = "Preço deve ser maior que zero")
     private Double precoCusto;
     
     public String getId() {

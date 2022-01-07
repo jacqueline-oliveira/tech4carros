@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,7 +54,7 @@ public class CarroController {
     }
 
     @PostMapping
-    public ResponseEntity<CarroDTO> cadastrarCarro(@RequestBody CarroDTO carro) {
+    public ResponseEntity<CarroDTO> cadastrarCarro(@RequestBody @Valid CarroDTO carro) {
         return new ResponseEntity<>(servico.cadastrarCarro(carro), HttpStatus.CREATED);
     }
 
@@ -63,7 +65,7 @@ public class CarroController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CarroDTO> atualizarCarro(@PathVariable String id, @RequestBody CarroDTO novoCarro){
+    public ResponseEntity<CarroDTO> atualizarCarro(@PathVariable String id, @RequestBody @Valid CarroDTO novoCarro){
         Optional<CarroDTO> carro = servico.obterCarroPorId(id);
 
         if (carro.isPresent()){  
